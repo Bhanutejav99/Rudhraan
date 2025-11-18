@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rudhran Home Foods & Spices | Authentic Homemade Goodness</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        .font-playfair { font-family: 'Playfair Display', serif; }
+        
+        .hero-bg {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1596040033229-a9821ebd058d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* Parallax effect */
+        }
+
+        /* Cart Slide-in Animation */
+        #cart-sidebar { transition: transform 0.3s ease-in-out; }
+        .cart-open { transform: translateX(0) !important; }
+        .cart-closed { transform: translateX(100%); }
+
+        /* Smooth fade for products */
+        .product-card { transition: all 0.3s ease; }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-800 relative overflow-x-hidden">
+
+    <div class="bg-amber-900 text-amber-50 text-xs text-center py-2 tracking-wide uppercase font-semibold">
+        🌿 Free Shipping on orders above ₹999 | 100% Homemade with Love
+    </div>
+
+    <header class="bg-white/95 backdrop-blur-md shadow-sm sticky top-0 z-40">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="flex items-center gap-2 group">
+                <div class="w-8 h-8 bg-amber-600 rounded-full flex items-center justify-center text-white font-playfair font-bold group-hover:bg-amber-700 transition">R</div>
+                <span class="text-2xl font-bold font-playfair text-amber-900 tracking-tight">Rudhran</span>
+            </a>
+
+            <div class="hidden md:flex items-center space-x-8 font-medium text-sm uppercase tracking-wide text-stone-600">
+                <a href="#about" class="hover:text-amber-600 transition">Story</a>
+                <a href="#products" class="hover:text-amber-600 transition">Shop</a>
+                <a href="#reviews" class="hover:text-amber-600 transition">Reviews</a>
+            </div>
+
+            <div class="flex items-center space-x-5">
+                <button id="search-toggle" class="text-stone-600 hover:text-amber-600 transition">
+                    <i class="fas fa-search text-lg"></i>
+                </button>
+                <button id="cart-btn" class="text-stone-600 hover:text-amber-600 transition relative">
+                    <i class="fas fa-shopping-bag text-xl"></i>
+                    <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center opacity-0 transition-opacity">0</span>
+                </button>
+                <button id="mobile-menu-btn" class="md:hidden text-stone-800">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </nav>
+
+        <div id="mobile-menu" class="hidden bg-white border-t md:hidden">
+            <a href="#about" class="block px-6 py-3 text-stone-600 border-b hover:bg-amber-50">Story</a>
+            <a href="#products" class="block px-6 py-3 text-stone-600 border-b hover:bg-amber-50">Shop</a>
+            <a href="#contact" class="block px-6 py-3 text-stone-600 hover:bg-amber-50">Contact</a>
+        </div>
+
+        <div id="search-bar" class="hidden bg-white border-t p-4 absolute w-full shadow-lg z-30">
+            <div class="container mx-auto max-w-2xl relative">
+                <i class="fas fa-search absolute left-4 top-3.5 text-gray-400"></i>
+                <input type="text" id="global-search" placeholder="Search for pickles, powders, or malts..." class="w-full bg-stone-100 rounded-full py-3 pl-12 pr-4 outline-none focus:ring-2 focus:ring-amber-500">
+            </div>
+        </div>
+    </header>
+
+    <section class="hero-bg text-white h-[70vh] flex items-center relative">
+        <div class="absolute inset-0 bg-gradient-to-b from-black/30 to-transparent"></div>
+        <div class="container mx-auto px-6 text-center relative z-10 pt-10">
+            <span class="bg-amber-600/90 text-white px-4 py-1 rounded-full text-xs uppercase tracking-widest font-semibold mb-6 inline-block animate-pulse">Est. 2020</span>
+            <h1 class="text-5xl md:text-7xl font-playfair font-bold mb-6 drop-shadow-xl leading-tight">
+                Tradition in <br/> Every Spoonful
+            </h1>
+            <p class="text-lg md:text-xl max-w-2xl mx-auto mb-10 text-stone-200 font-light">
+                Handcrafted pickles, aromatic spice blends, and healthy malts made in our home kitchen, delivered to yours.
+            </p>
+            <div class="flex flex-col md:flex-row gap-4 justify-center">
+                <a href="#products" class="bg-amber-600 hover:bg-amber-700 text-white py-4 px-8 rounded-full font-semibold transition transform hover:scale-105 shadow-lg shadow-amber-900/50">
+                    Shop Now
+                </a>
+                <a href="#about" class="bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white border border-white/30 py-4 px-8 rounded-full font-semibold transition">
+                    Our Story
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-12 bg-white border-b border-stone-100">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div class="p-4">
+                    <i class="fas fa-hand-holding-heart text-4xl text-amber-600 mb-4"></i>
+                    <h3 class="font-bold text-stone-800">Handmade</h3>
+                    <p class="text-sm text-stone-500">Made in small batches</p>
+                </div>
+                <div class="p-4">
+                    <i class="fas fa-leaf text-4xl text-amber-600 mb-4"></i>
+                    <h3 class="font-bold text-stone-800">100% Natural</h3>
+                    <p class="text-sm text-stone-500">No artificial preservatives</p>
+                </div>
+                <div class="p-4">
+                    <i class="fas fa-mortar-pestle text-4xl text-amber-600 mb-4"></i>
+                    <h3 class="font-bold text-stone-800">Traditional</h3>
+                    <p class="text-sm text-stone-500">Authentic family recipes</p>
+                </div>
+                <div class="p-4">
+                    <i class="fas fa-truck text-4xl text-amber-600 mb-4"></i>
+                    <h3 class="font-bold text-stone-800">Shipping</h3>
+                    <p class="text-sm text-stone-500">Pan-India Delivery</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="py-20 bg-stone-50">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row items-center gap-12">
+            <div class="md:w-1/2">
+                <img src="https://images.unsplash.com/photo-1532336414038-cf19250c5757?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Spices" class="rounded-2xl shadow-2xl">
+            </div>
+            <div class="md:w-1/2 text-left">
+                <h2 class="text-4xl font-playfair font-bold text-amber-900 mb-6">Rooted in Heritage</h2>
+                <div class="w-20 h-1 bg-amber-500 mb-8"></div>
+                <p class="text-stone-600 leading-relaxed mb-6 text-lg">
+                    At Rudhran, we don't utilize factories; we use a kitchen. Our journey began with a simple thought: why is it so hard to find the taste of grandmother's pickles in the city? 
+                </p>
+                <p class="text-stone-600 leading-relaxed mb-8">
+                    We hand-select our raw materials from local farmers, sun-dry our chilies, and stone-grind our spices. Every jar that leaves our home is a promise of purity and nostalgia.
+                </p>
+                <button class="text-amber-700 font-bold hover:text-amber-900 flex items-center gap-2 group">
+                    Read Full Story <i class="fas fa-arrow-right transform group-hover:translate-x-1 transition"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section id="products" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-playfair font-bold text-amber-900 mb-4">Our Pantry</h2>
+                <p class="text-stone-500">Select a category to filter products</p>
+            </div>
+            
+            <div id="filter-buttons" class="flex flex-wrap justify-center gap-3 mb-12">
+                <button class="filter-btn bg-amber-700 text-white py-2 px-6 rounded-full shadow-lg hover:bg-amber-800 transition duration-300 text-sm font-medium uppercase tracking-wider" data-category="all">All</button>
+            </div>
+
+            <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                </div>
+        </div>
+    </section>
+
+    <section id="reviews" class="py-20 bg-amber-50">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-3xl font-playfair font-bold text-amber-900 mb-12">What Our Family Says</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-xl shadow-sm border border-amber-100">
+                    <div class="text-amber-500 text-sm mb-4"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <p class="text-stone-600 italic mb-6">"The Ragi Malt is a game changer for my kids' breakfast. It tastes so fresh compared to store-bought ones."</p>
+                    <h4 class="font-bold text-stone-800">- Priya S.</h4>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-sm border border-amber-100">
+                    <div class="text-amber-500 text-sm mb-4"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <p class="text-stone-600 italic mb-6">"The Tomato Pickle took me back to my childhood village. Absolutely authentic taste!"</p>
+                    <h4 class="font-bold text-stone-800">- Rahul K.</h4>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-sm border border-amber-100">
+                    <div class="text-amber-500 text-sm mb-4"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <p class="text-stone-600 italic mb-6">"I ordered the customized bulk spice powders for my wedding return gifts. Everyone loved it."</p>
+                    <h4 class="font-bold text-stone-800">- Anjali M.</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact" class="bg-stone-900 text-stone-300 py-16">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-12 mb-12">
+                <div>
+                    <h3 class="text-2xl font-playfair font-bold text-white mb-6">Rudhran</h3>
+                    <p class="text-stone-400 mb-6">Bringing the authentic taste of homemade goodness right to your kitchen.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-stone-800 flex items-center justify-center hover:bg-amber-600 transition"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-stone-800 flex items-center justify-center hover:bg-amber-600 transition"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-stone-800 flex items-center justify-center hover:bg-amber-600 transition"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-6">Quick Links</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#about" class="hover:text-amber-500 transition">Our Story</a></li>
+                        <li><a href="#products" class="hover:text-amber-500 transition">Products</a></li>
+                        <li><a href="#" class="hover:text-amber-500 transition">Shipping Policy</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-6">Contact</h4>
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-3"><i class="fas fa-map-marker-alt mt-1 text-amber-500"></i> Hyderabad, Telangana, India</li>
+                        <li class="flex items-start gap-3"><i class="fas fa-phone mt-1 text-amber-500"></i> +91 123-456-7890</li>
+                        <li class="flex items-start gap-3"><i class="fas fa-envelope mt-1 text-amber-500"></i> hello@rudhran.com</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-6">Newsletter</h4>
+                    <p class="text-sm text-stone-400 mb-4">Subscribe for recipes and offers.</p>
+                    <div class="flex">
+                        <input type="email" placeholder="Your email" class="bg-stone-800 text-white px-4 py-2 rounded-l-lg w-full outline-none focus:ring-1 focus:ring-amber-500">
+                        <button class="bg-amber-600 px-4 py-2 rounded-r-lg hover:bg-amber-700 transition">GO</button>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-stone-800 pt-8 text-center text-sm text-stone-500">
+                &copy; 2024 Rudhran Home Foods & Spices. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <div id="cart-overlay" class="fixed inset-0 bg-black/50 z-50 hidden transition-opacity"></div>
+    <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-full md:w-[400px] bg-white z-50 shadow-2xl flex flex-col cart-closed">
+        <div class="p-6 border-b flex justify-between items-center bg-stone-50">
+            <h2 class="text-xl font-playfair font-bold text-stone-800">Your Basket</h2>
+            <button id="close-cart" class="text-stone-500 hover:text-red-500 transition"><i class="fas fa-times text-xl"></i></button>
+        </div>
+        
+        <div id="cart-items" class="flex-grow overflow-y-auto p-6 space-y-6">
+            <div class="text-center text-stone-400 mt-10">
+                <i class="fas fa-shopping-basket text-4xl mb-3"></i>
+                <p>Your basket is empty.</p>
+            </div>
+        </div>
+
+        <div class="p-6 border-t bg-stone-50">
+            <div class="flex justify-between mb-4 text-lg font-bold text-stone-800">
+                <span>Total</span>
+                <span id="cart-total">₹0</span>
+            </div>
+            <button id="checkout-btn" class="w-full bg-green-600 text-white py-4 rounded-lg font-bold shadow-md hover:bg-green-700 transition flex items-center justify-center gap-2">
+                <i class="fab fa-whatsapp text-xl"></i> Order via WhatsApp
+            </button>
+            <p class="text-xs text-center text-stone-500 mt-3">We will confirm shipping costs on chat.</p>
+        </div>
+    </div>
+
+    <script>
+        // --- State Management ---
+        const state = {
+            products: [],
+            cart: [],
+            activeCategory: 'all',
+            searchQuery: ''
+        };
+
+        // --- Updated CSV Data with PRICES ---
+        const csvData = `Category,Product Name,Variant / Type,Price,Available Sizes (g/kg),Custom Order (Y/N)
+Flours,Ragi Flour,-,60,"250g, 500g, 1kg",Yes
+Flours,Rice Flour,-,50,"250g, 500g, 1kg",Yes
+Flours,Wheat Flour,Premium Sharbati,75,"1kg, 5kg",Yes
+Malts,Ragi Malt,Plain,150,"500g",Yes
+Malts,Health Mix,Sprouted,220,"500g",Yes
+Pickles,Tomato Pickle,Andhra Style,180,"250g",Yes
+Pickles,Lemon Pickle,-,140,"250g",Yes
+Pickles,Mango Pickle,Avakaya,200,"250g",Yes
+Pickles,Gongura Pickle,-,190,"250g",Yes
+"Dry Fruits",Mixed Dry Fruits,Premium,450,"250g",Yes
+"Instant Masalas",Rasam Powder,-,120,"100g",Yes
+"Instant Masalas",Sambar Powder,-,130,"100g",Yes
+"Instant Masalas",Chicken Masala,Homemade,150,"100g",Yes
+Spices,Turmeric Powder,High Curcumin,90,"100g",Yes
+Spices,Red Chilli Powder,Guntur,110,"100g",Yes
+Spices,Coriander Powder,-,80,"100g",Yes`;
+
+        // --- DOM Elements ---
+        const els = {
+            productGrid: document.getElementById('product-grid'),
+            filterContainer: document.getElementById('filter-buttons'),
+            searchInput: document.getElementById('global-search'),
+            searchBar: document.getElementById('search-bar'),
+            searchToggle: document.getElementById('search-toggle'),
+            cartBtn: document.getElementById('cart-btn'),
+            cartSidebar: document.getElementById('cart-sidebar'),
+            cartOverlay: document.getElementById('cart-overlay'),
+            closeCart: document.getElementById('close-cart'),
+            cartItems: document.getElementById('cart-items'),
+            cartTotal: document.getElementById('cart-total'),
+            cartCount: document.getElementById('cart-count'),
+            checkoutBtn: document.getElementById('checkout-btn'),
+            mobileMenuBtn: document.getElementById('mobile-menu-btn'),
+            mobileMenu: document.getElementById('mobile-menu')
+        };
+
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            Papa.parse(csvData, {
+                header: true,
+                skipEmptyLines: true,
+                complete: function(results) {
+                    // Clean and map data, adding an ID
+                    state.products = results.data.map((p, index) => ({
+                        id: index,
+                        category: p.Category,
+                        name: p['Product Name'],
+                        variant: p['Variant / Type'] === '-' ? '' : p['Variant / Type'],
+                        price: parseInt(p.Price) || 0,
+                        sizes: p['Available Sizes (g/kg)'],
+                        image: getPlaceholderImage(p.Category, p['Product Name'])
+                    }));
+
+                    initApp();
+                }
+            });
+        });
+
+        function initApp() {
+            renderFilters();
+            renderProducts();
+            setupEventListeners();
+        }
+
+        // --- Helpers ---
+        function getPlaceholderImage(category, name) {
+            // Returns a contextually relevant Unsplash image based on category
+            const keywords = {
+                'Flours': 'flour',
+                'Malts': 'health drink powder',
+                'Pickles': 'indian pickle jar',
+                'Spices': 'red chilli powder',
+                'Dry Fruits': 'almonds cashews',
+                'Instant Masalas': 'spices spoon'
+            };
+            const term = keywords[category] || 'food';
+            return `https://placehold.co/400x300/FDE68A/451A03?text=${encodeURIComponent(name)}\n(₹${Math.floor(Math.random()*100 + 100)})`;
+            // Note: In a real app, you would use real image URLs.
+        }
+
+        // --- Rendering ---
+        function renderFilters() {
+            const categories = ['all', ...new Set(state.products.map(p => p.category))];
+            els.filterContainer.innerHTML = categories.map(cat => `
+                <button class="filter-btn ${cat === 'all' ? 'bg-amber-700 text-white' : 'bg-white text-stone-600'} py-2 px-5 rounded-full shadow-sm hover:bg-amber-100 border border-stone-200 transition duration-300 text-sm font-medium uppercase tracking-wider" data-category="${cat}">
+                    ${cat}
+                </button>
+            `).join('');
+        }
+
+        function renderProducts() {
+            const filtered = state.products.filter(p => {
+                const matchesCategory = state.activeCategory === 'all' || p.category === state.activeCategory;
+                const matchesSearch = p.name.toLowerCase().includes(state.searchQuery.toLowerCase());
+                return matchesCategory && matchesSearch;
+            });
+
+            els.productGrid.innerHTML = filtered.map(product => `
+                <div class="product-card bg-white rounded-xl shadow-md overflow-hidden flex flex-col h-full border border-stone-100 group">
+                    <div class="relative overflow-hidden h-48">
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover transition transform group-hover:scale-110 duration-500">
+                        <div class="absolute top-2 right-2 bg-white/90 px-2 py-1 rounded text-xs font-bold text-amber-700 shadow-sm">
+                            ₹${product.price}
+                        </div>
+                    </div>
+                    <div class="p-5 flex-grow flex flex-col">
+                        <div class="text-xs text-amber-600 font-bold uppercase tracking-widest mb-1">${product.category}</div>
+                        <h3 class="text-lg font-bold text-stone-800 leading-tight mb-1">${product.name}</h3>
+                        ${product.variant ? `<p class="text-xs text-stone-500 italic mb-3">${product.variant}</p>` : '<div class="mb-3"></div>'}
+                        
+                        <div class="mt-auto pt-4 border-t border-stone-100 flex items-center justify-between">
+                            <span class="text-xs text-stone-500">Size: ${product.sizes.split(',')[0]}</span>
+                            <button onclick="addToCart(${product.id})" class="bg-stone-800 hover:bg-amber-600 text-white text-sm px-4 py-2 rounded-lg transition flex items-center gap-2">
+                                Add <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderCart() {
+            if (state.cart.length === 0) {
+                els.cartItems.innerHTML = `
+                    <div class="flex flex-col items-center justify-center h-64 text-stone-400">
+                        <i class="fas fa-shopping-basket text-5xl mb-4 opacity-50"></i>
+                        <p>Your basket is empty.</p>
+                        <button onclick="toggleCart()" class="mt-4 text-amber-600 font-bold text-sm hover:underline">Start Shopping</button>
+                    </div>`;
+                els.cartTotal.innerText = '₹0';
+                els.cartCount.style.opacity = '0';
+                return;
+            }
+
+            let total = 0;
+            let totalItems = 0;
+
+            els.cartItems.innerHTML = state.cart.map(item => {
+                total += item.price * item.qty;
+                totalItems += item.qty;
+                return `
+                    <div class="flex gap-4 items-center bg-stone-50 p-3 rounded-lg border border-stone-100">
+                        <img src="${item.image}" class="w-16 h-16 object-cover rounded-md">
+                        <div class="flex-grow">
+                            <h4 class="font-bold text-stone-800 text-sm">${item.name}</h4>
+                            <p class="text-xs text-stone-500">₹${item.price} x ${item.qty}</p>
+                        </div>
+                        <div class="flex flex-col items-end gap-1">
+                            <div class="flex items-center bg-white rounded shadow-sm border">
+                                <button onclick="updateQty(${item.id}, -1)" class="px-2 text-stone-600 hover:text-red-500">-</button>
+                                <span class="text-xs font-bold px-1 w-4 text-center">${item.qty}</span>
+                                <button onclick="updateQty(${item.id}, 1)" class="px-2 text-stone-600 hover:text-green-500">+</button>
+                            </div>
+                            <span class="text-sm font-bold text-amber-700">₹${item.price * item.qty}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            els.cartTotal.innerText = '₹' + total;
+            els.cartCount.innerText = totalItems;
+            els.cartCount.style.opacity = '1';
+        }
+
+        // --- Actions ---
+        window.addToCart = (id) => {
+            const product = state.products.find(p => p.id === id);
+            const existing = state.cart.find(item => item.id === id);
+
+            if (existing) {
+                existing.qty++;
+            } else {
+                state.cart.push({ ...product, qty: 1 });
+            }
+            
+            renderCart();
+            toggleCart(true); // Open cart to show feedback
+        };
+
+        window.updateQty = (id, change) => {
+            const index = state.cart.findIndex(item => item.id === id);
+            if (index === -1) return;
+
+            const item = state.cart[index];
+            item.qty += change;
+
+            if (item.qty <= 0) {
+                state.cart.splice(index, 1);
+            }
+            renderCart();
+        };
+
+        window.toggleCart = (forceOpen = null) => {
+            const isOpen = !els.cartSidebar.classList.contains('cart-closed');
+            const shouldOpen = forceOpen !== null ? forceOpen : !isOpen;
+
+            if (shouldOpen) {
+                els.cartSidebar.classList.remove('cart-closed');
+                els.cartSidebar.classList.add('cart-open');
+                els.cartOverlay.classList.remove('hidden');
+            } else {
+                els.cartSidebar.classList.add('cart-closed');
+                els.cartSidebar.classList.remove('cart-open');
+                els.cartOverlay.classList.add('hidden');
+            }
+        };
+
+        function checkoutWhatsApp() {
+            if (state.cart.length === 0) return;
+
+            let message = "Hello Rudhran Foods! I would like to place an order:\n\n";
+            state.cart.forEach(item => {
+                message += `▪ ${item.name} (${item.qty} x ₹${item.price})\n`;
+            });
+            
+            const total = els.cartTotal.innerText;
+            message += `\n*Total Value: ${total}*`;
+            message += `\n\nPlease confirm availability and shipping cost.`;
+
+            const encodedMsg = encodeURIComponent(message);
+            window.open(`https://wa.me/917386375813?text=${encodedMsg}`, '_blank');
+        }
+
+        // --- Event Listeners ---
+        function setupEventListeners() {
+            els.filterContainer.addEventListener('click', (e) => {
+                if (e.target.classList.contains('filter-btn')) {
+                    // Update Active State
+                    document.querySelectorAll('.filter-btn').forEach(b => {
+                        b.classList.remove('bg-amber-700', 'text-white');
+                        b.classList.add('bg-white', 'text-stone-600');
+                    });
+                    e.target.classList.remove('bg-white', 'text-stone-600');
+                    e.target.classList.add('bg-amber-700', 'text-white');
+
+                    state.activeCategory = e.target.dataset.category;
+                    renderProducts();
+                }
+            });
+
+            els.searchToggle.addEventListener('click', () => {
+                els.searchBar.classList.toggle('hidden');
+                if (!els.searchBar.classList.contains('hidden')) els.searchInput.focus();
+            });
+
+            els.searchInput.addEventListener('input', (e) => {
+                state.searchQuery = e.target.value;
+                renderProducts();
+            });
+
+            els.cartBtn.addEventListener('click', () => toggleCart());
+            els.closeCart.addEventListener('click', () => toggleCart(false));
+            els.cartOverlay.addEventListener('click', () => toggleCart(false));
+            els.checkoutBtn.addEventListener('click', checkoutWhatsApp);
+            
+            els.mobileMenuBtn.addEventListener('click', () => {
+                els.mobileMenu.classList.toggle('hidden');
+            });
+        }
+    </script>
+</body>
+</html>
