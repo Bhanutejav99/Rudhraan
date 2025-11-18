@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rudhran Home Foods & Spices | Authentic Homemade Goodness</title>
+    <title>Rudhraan Home Foods & Spices | Authentic Homemade Goodness</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
@@ -14,7 +14,7 @@
         .font-playfair { font-family: 'Playfair Display', serif; }
         
         .hero-bg {
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1596040033229-a9821ebd058d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.4)), url('https://i.pinimg.com/1200x/91/e5/a3/91e5a35502eb33e055c697077b07fce0.jpg?auto=format&fit=crop&w=1920&q=80');
             background-size: cover;
             background-position: center;
             background-attachment: fixed; /* Parallax effect */
@@ -40,7 +40,7 @@
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
             <a href="#" class="flex items-center gap-2 group">
                 <div class="w-8 h-8 bg-amber-600 rounded-full flex items-center justify-center text-white font-playfair font-bold group-hover:bg-amber-700 transition">R</div>
-                <span class="text-2xl font-bold font-playfair text-amber-900 tracking-tight">Rudhran</span>
+                <span class="text-2xl font-bold font-playfair text-amber-900 tracking-tight">Rudhraan</span>
             </a>
 
             <div class="hidden md:flex items-center space-x-8 font-medium text-sm uppercase tracking-wide text-stone-600">
@@ -128,13 +128,13 @@
     <section id="about" class="py-20 bg-stone-50">
         <div class="container mx-auto px-6 flex flex-col md:flex-row items-center gap-12">
             <div class="md:w-1/2">
-                <img src="https://images.unsplash.com/photo-1532336414038-cf19250c5757?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Spices" class="rounded-2xl shadow-2xl">
+                <img src="https://i.pinimg.com/736x/b9/21/6b/b9216b8bea73f1f7d54f13245f19ccaa.jpg?auto=format&fit=crop&w=800&q=80" alt="Spices" class="rounded-2xl shadow-2xl">
             </div>
             <div class="md:w-1/2 text-left">
                 <h2 class="text-4xl font-playfair font-bold text-amber-900 mb-6">Rooted in Heritage</h2>
                 <div class="w-20 h-1 bg-amber-500 mb-8"></div>
                 <p class="text-stone-600 leading-relaxed mb-6 text-lg">
-                    At Rudhran, we don't utilize factories; we use a kitchen. Our journey began with a simple thought: why is it so hard to find the taste of grandmother's pickles in the city? 
+                    At Rudhraan, we don't utilize factories; we use a kitchen. Our journey began with a simple thought: why is it so hard to find the taste of grandmother's pickles in the city? 
                 </p>
                 <p class="text-stone-600 leading-relaxed mb-8">
                     We hand-select our raw materials from local farmers, sun-dry our chilies, and stone-grind our spices. Every jar that leaves our home is a promise of purity and nostalgia.
@@ -189,7 +189,7 @@
         <div class="container mx-auto px-6">
             <div class="grid md:grid-cols-4 gap-12 mb-12">
                 <div>
-                    <h3 class="text-2xl font-playfair font-bold text-white mb-6">Rudhran</h3>
+                    <h3 class="text-2xl font-playfair font-bold text-white mb-6">Rudhraan</h3>
                     <p class="text-stone-400 mb-6">Bringing the authentic taste of homemade goodness right to your kitchen.</p>
                     <div class="flex space-x-4">
                         <a href="#" class="w-10 h-10 rounded-full bg-stone-800 flex items-center justify-center hover:bg-amber-600 transition"><i class="fab fa-instagram"></i></a>
@@ -223,7 +223,7 @@
                 </div>
             </div>
             <div class="border-t border-stone-800 pt-8 text-center text-sm text-stone-500">
-                &copy; 2024 Rudhran Home Foods & Spices. All Rights Reserved.
+                &copy; 2024 Rudhraan Home Foods & Spices. All Rights Reserved.
             </div>
         </div>
     </footer>
@@ -263,24 +263,24 @@
             searchQuery: ''
         };
 
-        // --- Updated CSV Data with PRICES ---
-        const csvData = `Category,Product Name,Variant / Type,Price,Available Sizes (g/kg),Custom Order (Y/N)
-Flours,Ragi Flour,-,60,"250g, 500g, 1kg",Yes
-Flours,Rice Flour,-,50,"250g, 500g, 1kg",Yes
-Flours,Wheat Flour,Premium Sharbati,75,"1kg, 5kg",Yes
-Malts,Ragi Malt,Plain,150,"500g",Yes
-Malts,Health Mix,Sprouted,220,"500g",Yes
-Pickles,Tomato Pickle,Andhra Style,180,"250g",Yes
-Pickles,Lemon Pickle,-,140,"250g",Yes
-Pickles,Mango Pickle,Avakaya,200,"250g",Yes
-Pickles,Gongura Pickle,-,190,"250g",Yes
-"Dry Fruits",Mixed Dry Fruits,Premium,450,"250g",Yes
-"Instant Masalas",Rasam Powder,-,120,"100g",Yes
-"Instant Masalas",Sambar Powder,-,130,"100g",Yes
-"Instant Masalas",Chicken Masala,Homemade,150,"100g",Yes
-Spices,Turmeric Powder,High Curcumin,90,"100g",Yes
-Spices,Red Chilli Powder,Guntur,110,"100g",Yes
-Spices,Coriander Powder,-,80,"100g",Yes`;
+        // --- CSV Data with Images ---
+        const csvData = `Category,Product Name,Variant / Type,Price,Available Sizes (g/kg),Custom Order (Y/N),ImageURL
+Flours,Ragi Flour,-,60,"250g, 500g, 1kg",Yes,"https://i.pinimg.com/736x/35/4a/cd/354acdd44b59309285bab6df65338c0b.jpg?auto=format&fit=crop&w=500&q=80"
+Flours,Rice Flour,-,50,"250g, 500g, 1kg",Yes,"https://i.pinimg.com/736x/12/c3/77/12c37745d29d1163e56400eefad4ecf6.jpg?auto=format&fit=crop&w=500&q=80"
+Flours,Wheat Flour,Premium Sharbati,75,"1kg, 5kg",Yes,"https://i.pinimg.com/1200x/29/c9/23/29c92348ca4e8b21d40119d2973c18e6.jpg?auto=format&fit=crop&w=500&q=80"
+Malts,Ragi Malt,Plain,150,"500g",Yes,"https://i.pinimg.com/736x/f3/b1/af/f3b1afda1bf205d54e8f680aa715e890.jpg?auto=format&fit=crop&w=500&q=80"
+Malts,Health Mix,Sprouted,220,"500g",Yes,"https://i.pinimg.com/736x/54/de/20/54de208cd01adff0ac079d2bc2c9c50c.jpg?auto=format&fit=crop&w=500&q=80"
+Pickles,Tomato Pickle,Andhra Style,180,"250g",Yes,"https://i.pinimg.com/1200x/63/75/a8/6375a82fddee25b682a8b9aa5d1de89c.jpg?auto=format&fit=crop&w=500&q=80"
+Pickles,Lemon Pickle,-,140,"250g",Yes,"https://i.pinimg.com/1200x/6a/65/78/6a657810b81bea9d435b4aeb519ad8f0.jpg?auto=format&fit=crop&w=500&q=80"
+Pickles,Mango Pickle,Avakaya,200,"250g",Yes,"https://i.pinimg.com/1200x/8a/b1/bb/8ab1bba51cf5da1f236cc3cc9868cc9d.jpg?auto=format&fit=crop&w=500&q=80"
+Pickles,Gongura Pickle,-,190,"250g",Yes,"https://i.pinimg.com/1200x/78/7f/ca/787fca44bd12b432b105a90e4819e3e7.jpg?auto=format&fit=crop&w=500&q=80"
+"Dry Fruits",Mixed Dry Fruits,Premium,450,"250g",Yes,"https://i.pinimg.com/1200x/2b/e2/1c/2be21c24d89db09e208e716c6908b6fc.jpg?auto=format&fit=crop&w=500&q=80"
+"Instant Masalas",Rasam Powder,-,120,"100g",Yes,"https://i.pinimg.com/736x/ac/9e/0d/ac9e0d9407996ddcdc7ea11225efbb37.jpg?auto=format&fit=crop&w=500&q=80"
+"Instant Masalas",Sambar Powder,-,130,"100g",Yes,"https://i.pinimg.com/1200x/87/ff/10/87ff1046ae6e3b62dd670f307c28c2f1.jpg?auto=format&fit=crop&w=500&q=80"
+"Instant Masalas",Chicken Masala,Homemade,150,"100g",Yes,"https://i.pinimg.com/736x/51/3a/76/513a76e024081dede928c24c0c1d3076.jpg?auto=format&fit=crop&w=500&q=80"
+Spices,Turmeric Powder,High Curcumin,90,"100g",Yes,"https://i.pinimg.com/736x/cc/67/e7/cc67e71612569278025bdbbe1e0d7027.jpg?auto=format&fit=crop&w=500&q=80"
+Spices,Red Chilli Powder,Guntur,110,"100g",Yes,"https://i.pinimg.com/736x/b8/bb/a6/b8bba611d83502520537a9cf02ac1768.jpg?auto=format&fit=crop&w=500&q=80"
+Spices,Coriander Powder,-,80,"100g",Yes,"https://i.pinimg.com/1200x/64/70/21/64702155ec10fef1da8df90bd2dcde17.jpg?auto=format&fit=crop&w=500&q=80"`;
 
         // --- DOM Elements ---
         const els = {
@@ -315,7 +315,8 @@ Spices,Coriander Powder,-,80,"100g",Yes`;
                         variant: p['Variant / Type'] === '-' ? '' : p['Variant / Type'],
                         price: parseInt(p.Price) || 0,
                         sizes: p['Available Sizes (g/kg)'],
-                        image: getPlaceholderImage(p.Category, p['Product Name'])
+                        // Use CSV ImageURL if available, else use placeholder function
+                        image: p.ImageURL || getPlaceholderImage(p.Category, p['Product Name'])
                     }));
 
                     initApp();
@@ -331,7 +332,6 @@ Spices,Coriander Powder,-,80,"100g",Yes`;
 
         // --- Helpers ---
         function getPlaceholderImage(category, name) {
-            // Returns a contextually relevant Unsplash image based on category
             const keywords = {
                 'Flours': 'flour',
                 'Malts': 'health drink powder',
@@ -342,7 +342,6 @@ Spices,Coriander Powder,-,80,"100g",Yes`;
             };
             const term = keywords[category] || 'food';
             return `https://placehold.co/400x300/FDE68A/451A03?text=${encodeURIComponent(name)}\n(₹${Math.floor(Math.random()*100 + 100)})`;
-            // Note: In a real app, you would use real image URLs.
         }
 
         // --- Rendering ---
@@ -475,7 +474,7 @@ Spices,Coriander Powder,-,80,"100g",Yes`;
         function checkoutWhatsApp() {
             if (state.cart.length === 0) return;
 
-            let message = "Hello Rudhran Foods! I would like to place an order:\n\n";
+            let message = "Hello Rudhraan Foods! I would like to place an order:\n\n";
             state.cart.forEach(item => {
                 message += `▪ ${item.name} (${item.qty} x ₹${item.price})\n`;
             });
