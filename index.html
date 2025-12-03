@@ -596,25 +596,30 @@
 
         // --- Rendering ---
         function renderFilters() {
+            // Ensure products are loaded before rendering filters
+            if (!state.products || state.products.length === 0) return;
+
             const categories = ['all', ...new Set(state.products.map(p => p.category))];
             els.filterContainer.innerHTML = categories.map(cat => {
                 const isActive = state.activeCategory === cat;
-                // Use a placeholder image for the category circle. 
-                // In a real app, you'd have a specific image for each category.
-                // Here we'll just use the first product image of that category or a generic one.
-                let catImage = 'https://placehold.co/100x100/f59e0b/ffffff?text=' + cat.charAt(0).toUpperCase();
 
-                if (cat !== 'all') {
-                    const product = state.products.find(p => p.category === cat);
-                    if (product) catImage = product.image;
+                // Default placeholder
+                let catImage = 'https://placehold.co/100x100/f59e0b/ffffff?text=' + (cat ? cat.charAt(0).toUpperCase() : '?');
+
+                if (cat === 'all') {
+                    catImage = 'https://i.pinimg.com/150x150/91/e5/a3/91e5a35502eb33e055c697077b07fce0.jpg';
                 } else {
-                    catImage = 'https://i.pinimg.com/150x150/91/e5/a3/91e5a35502eb33e055c697077b07fce0.jpg'; // Hero image crop for 'All'
+                    // Try to find a product image for this category
+                    const product = state.products.find(p => p.category === cat && p.image);
+                    if (product) {
+                        catImage = product.image;
+                    }
                 }
 
                 return `
                 <button class="filter-btn flex flex-col items-center gap-1 group flex-shrink-0" data-category="${cat}">
                     <div class="w-14 h-14 md:w-20 md:h-20 rounded-full p-0.5 border-2 transition-all duration-300 ${isActive ? 'border-amber-600 scale-105' : 'border-stone-200 group-hover:border-amber-400'}">
-                        <img src="${catImage}" class="w-full h-full object-cover rounded-full" alt="${cat}">
+                        <img src="${catImage}" class="w-full h-full object-cover rounded-full" alt="${cat}" onerror="this.src='https://placehold.co/100x100/f59e0b/ffffff?text=${cat ? cat.charAt(0) : '?'}'">
                     </div>
                     <span class="text-[10px] md:text-xs font-bold uppercase tracking-wide transition-colors ${isActive ? 'text-amber-800' : 'text-stone-500 group-hover:text-amber-600'}">${cat}</span>
                 </button>
