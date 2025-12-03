@@ -531,9 +531,6 @@
                     </button>
                     <div class="relative overflow-hidden h-48">
                         <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover transition transform group-hover:scale-110 duration-500">
-                        <div class="absolute bottom-2 left-2 bg-white/90 px-2 py-1 rounded text-xs font-bold text-amber-700 shadow-sm">
-                            ₹${product.price}
-                        </div>
                     </div>
                     <div class="p-5 flex-grow flex flex-col">
                         <div class="text-xs text-amber-600 font-bold uppercase tracking-widest mb-1">${product.category}</div>
@@ -541,8 +538,11 @@
                         ${product.variant ? `<p class="text-xs text-stone-500 italic mb-3">${product.variant}</p>` : '<div class="mb-3"></div>'}
                         
                         <div class="mt-auto pt-4 border-t border-stone-100 flex items-center justify-between">
-                            <span class="text-xs text-stone-500">Size: ${product.sizes.split(',')[0]}</span>
-                            <button onclick="addToCart(${product.id})" class="bg-stone-800 hover:bg-amber-600 text-white text-sm px-4 py-2 rounded-lg transition flex items-center gap-2">
+                            <div class="flex flex-col">
+                                <span class="text-xs text-stone-500 mb-1">Size: ${product.sizes.split(',')[0]}</span>
+                                <span class="text-xl font-bold text-amber-700">₹${product.price}</span>
+                            </div>
+                            <button onclick="addToCart(${product.id})" class="bg-stone-800 hover:bg-amber-600 text-white text-sm px-6 py-2 rounded-lg transition flex items-center gap-2 shadow-sm">
                                 Add <i class="fas fa-plus"></i>
                             </button>
                         </div>
