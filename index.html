@@ -542,12 +542,12 @@
         function processData(data) {
             state.products = data.map((p, index) => ({
                 id: index,
-                category: p.Category ? p.Category.trim() : 'Uncategorized', // Trim whitespace to prevent duplicates
-                name: p['Product Name'],
-                variant: p['Variant / Type'] === '-' ? '' : p['Variant / Type'],
+                category: p.Category ? sanitize(p.Category.trim()) : 'Uncategorized', // Trim whitespace to prevent duplicates
+                name: sanitize(p['Product Name']),
+                variant: p['Variant / Type'] === '-' ? '' : sanitize(p['Variant / Type']),
                 price: parseInt(p.Price) || 0,
-                sizes: p['Available Sizes (g/kg)'],
-                image: p.ImageURL || getPlaceholderImage(p.Category, p['Product Name'])
+                sizes: sanitize(p['Available Sizes (g/kg)']),
+                image: sanitize(p.ImageURL) || getPlaceholderImage(p.Category, p['Product Name'])
             }));
             initApp();
         }
@@ -559,6 +559,20 @@
         }
 
         // --- Helpers ---
+        function sanitize(str) {
+            if (!str) return '';
+            if (typeof str !== 'string') return str;
+            return str.replace(/[&<>"']/g, function (m) {
+                switch (m) {
+                    case '&': return '&amp;';
+                    case '<': return '&lt;';
+                    case '>': return '&gt;';
+                    case '"': return '&quot;';
+                    case "'": return '&#039;';
+                }
+            });
+        }
+
         function getPlaceholderImage(category, name) {
             const keywords = {
                 'Flours': 'flour',
