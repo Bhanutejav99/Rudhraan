@@ -263,7 +263,7 @@
                 <!-- Filters injected via JS -->
             </div>
 
-            <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div id="product-grid" class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-8">
             </div>
         </div>
     </section>
@@ -662,24 +662,24 @@
                 const isWishlisted = state.wishlist.some(item => item.id === product.id);
                 return `
                 <div class="product-card bg-white rounded-xl shadow-md overflow-hidden flex flex-col h-full border border-stone-100 group relative">
-                    <button onclick="toggleWishlist(${product.id})" class="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-sm transition hover:bg-white text-stone-400 hover:text-red-500 ${isWishlisted ? 'text-red-500' : ''}">
-                        <i class="${isWishlisted ? 'fas' : 'far'} fa-heart"></i>
+                    <button onclick="toggleWishlist(${product.id})" class="absolute top-2 right-2 z-10 w-7 h-7 md:w-8 md:h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-sm transition hover:bg-white text-stone-400 hover:text-red-500 ${isWishlisted ? 'text-red-500' : ''}">
+                        <i class="${isWishlisted ? 'fas' : 'far'} fa-heart text-sm md:text-base"></i>
                     </button>
-                    <div class="relative overflow-hidden h-48">
+                    <div class="relative overflow-hidden h-36 md:h-48">
                         <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover transition transform group-hover:scale-110 duration-500">
                     </div>
-                    <div class="p-5 flex-grow flex flex-col">
-                        <div class="text-xs text-amber-600 font-bold uppercase tracking-widest mb-1">${product.category}</div>
-                        <h3 class="text-lg font-bold text-stone-800 leading-tight mb-1">${product.name}</h3>
-                        ${product.variant ? `<p class="text-xs text-stone-500 italic mb-3">${product.variant}</p>` : '<div class="mb-3"></div>'}
+                    <div class="p-3 md:p-5 flex-grow flex flex-col">
+                        <div class="text-[10px] md:text-xs text-amber-600 font-bold uppercase tracking-widest mb-1 truncate">${product.category}</div>
+                        <h3 class="text-sm md:text-lg font-bold text-stone-800 leading-tight mb-1 line-clamp-2">${product.name}</h3>
+                        ${product.variant ? `<p class="text-[10px] md:text-xs text-stone-500 italic mb-2 md:mb-3 truncate">${product.variant}</p>` : '<div class="mb-2 md:mb-3"></div>'}
                         
-                        <div class="mt-auto pt-4 border-t border-stone-100 flex items-center justify-between">
+                        <div class="mt-auto pt-3 md:pt-4 border-t border-stone-100 flex items-center justify-between gap-2">
                             <div class="flex flex-col">
-                                <span class="text-xs text-stone-500 mb-1">Size: ${product.sizes.split(',')[0]}</span>
-                                <span class="text-xl font-bold text-amber-700">₹${product.price}</span>
+                                <span class="text-[10px] md:text-xs text-stone-500 mb-0.5">Size: ${product.sizes.split(',')[0]}</span>
+                                <span class="text-base md:text-xl font-bold text-amber-700">₹${product.price}</span>
                             </div>
-                            <button onclick="addToCart(${product.id})" class="bg-stone-800 hover:bg-amber-600 text-white text-sm px-6 py-2 rounded-lg transition flex items-center gap-2 shadow-sm">
-                                Add <i class="fas fa-plus"></i>
+                            <button onclick="addToCart(${product.id})" class="bg-stone-800 hover:bg-amber-600 text-white text-xs md:text-sm px-3 py-2 md:px-6 md:py-2 rounded-lg transition flex items-center gap-1 md:gap-2 shadow-sm">
+                                <span class="hidden md:inline">Add</span> <i class="fas fa-plus"></i>
                             </button>
                         </div>
                     </div>
