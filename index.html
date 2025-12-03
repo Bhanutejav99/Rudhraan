@@ -420,7 +420,7 @@
         function processData(data) {
             state.products = data.map((p, index) => ({
                 id: index,
-                category: p.Category,
+                category: p.Category ? p.Category.trim() : 'Uncategorized', // Trim whitespace to prevent duplicates
                 name: p['Product Name'],
                 variant: p['Variant / Type'] === '-' ? '' : p['Variant / Type'],
                 price: parseInt(p.Price) || 0,
