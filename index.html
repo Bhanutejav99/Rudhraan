@@ -396,13 +396,8 @@
                 renderCart();
             }
 
-            // Fetch Data
-            // Try Google Sheet first, fallback to local products.csv if that fails (or if URL is dummy)
-            const dataUrl = (GOOGLE_SHEET_URL.includes('2PACX-1vR_r-i8o6i9y-w-w-w-w-w-w-w-w-w-w-w-w-w'))
-                ? 'products.csv' // Fallback for demo until user updates link
-                : GOOGLE_SHEET_URL;
-
-            fetch(dataUrl)
+            // Fetch Data from Google Sheets
+            fetch(GOOGLE_SHEET_URL)
                 .then(response => {
                     if (!response.ok) throw new Error("Network response was not ok");
                     return response.text();
