@@ -52,6 +52,23 @@
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
+
+        /* Toast Animation */
+        @keyframes slideUpFade {
+            from {
+                opacity: 0;
+                transform: translate(-50%, 20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+
+        .toast {
+            animation: slideUpFade 0.3s ease-out forwards;
+        }
     </style>
 </head>
 
@@ -81,10 +98,15 @@
                 <button id="search-toggle" class="text-stone-600 hover:text-amber-600 transition">
                     <i class="fas fa-search text-lg"></i>
                 </button>
+                <button id="wishlist-btn" class="text-stone-600 hover:text-red-500 transition relative">
+                    <i class="far fa-heart text-xl"></i>
+                    <span id="wishlist-count"
+                        class="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center opacity-0 transition-opacity">0</span>
+                </button>
                 <button id="cart-btn" class="text-stone-600 hover:text-amber-600 transition relative">
                     <i class="fas fa-shopping-bag text-xl"></i>
                     <span id="cart-count"
-                        class="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center opacity-0 transition-opacity">0</span>
+                        class="absolute -top-2 -right-2 bg-amber-600 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center opacity-0 transition-opacity">0</span>
                 </button>
                 <button id="mobile-menu-btn" class="md:hidden text-stone-800">
                     <i class="fas fa-bars text-xl"></i>
@@ -314,6 +336,30 @@
         </div>
     </div>
 
+    <!-- Wishlist Slide-in Animation -->
+    <div id="wishlist-sidebar"
+        class="fixed top-0 right-0 h-full w-full md:w-[400px] bg-white z-50 shadow-2xl flex flex-col cart-closed">
+        <div class="p-6 border-b flex justify-between items-center bg-stone-50">
+            <h2 class="text-xl font-playfair font-bold text-stone-800">Your Wishlist</h2>
+            <button id="close-wishlist" class="text-stone-500 hover:text-red-500 transition"><i
+                    class="fas fa-times text-xl"></i></button>
+        </div>
+
+        <div id="wishlist-items" class="flex-grow overflow-y-auto p-6 space-y-6">
+            <div class="text-center text-stone-400 mt-10">
+                <i class="far fa-heart text-4xl mb-3"></i>
+                <p>Your wishlist is empty.</p>
+            </div>
+        </div>
+
+        <div class="p-6 border-t bg-stone-50">
+            <button onclick="toggleWishlistSidebar(false); toggleCart(true);"
+                class="w-full bg-amber-600 text-white py-4 rounded-lg font-bold shadow-md hover:bg-amber-700 transition flex items-center justify-center gap-2">
+                <i class="fas fa-shopping-bag text-xl"></i> View Cart
+            </button>
+        </div>
+    </div>
+
     <!-- Checkout Modal -->
     <div id="checkout-modal" class="fixed inset-0 bg-black/60 z-[60] hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-xl shadow-2xl w-full max-w-md overflow-hidden">
@@ -346,11 +392,15 @@
         </div>
     </div>
 
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-[70] space-y-2"></div>
+
     <script>
         // --- State Management ---
         const state = {
             products: [],
             cart: JSON.parse(localStorage.getItem('rudhraan_cart')) || [],
+            wishlist: JSON.parse(localStorage.getItem('rudhraan_wishlist')) || [],
             activeCategory: 'all',
             searchQuery: ''
         };
@@ -386,15 +436,20 @@
             cartCount: document.getElementById('cart-count'),
             checkoutBtn: document.getElementById('checkout-btn'),
             mobileMenuBtn: document.getElementById('mobile-menu-btn'),
-            mobileMenu: document.getElementById('mobile-menu')
+            mobileMenu: document.getElementById('mobile-menu'),
+            wishlistBtn: document.getElementById('wishlist-btn'),
+            wishlistSidebar: document.getElementById('wishlist-sidebar'),
+            closeWishlist: document.getElementById('close-wishlist'),
+            wishlistItems: document.getElementById('wishlist-items'),
+            wishlistCount: document.getElementById('wishlist-count'),
+            toastContainer: document.getElementById('toast-container')
         };
 
         // --- Initialization ---
         document.addEventListener('DOMContentLoaded', () => {
-            // Check if cart has items and update UI immediately
-            if (state.cart.length > 0) {
-                renderCart();
-            }
+            // Check if cart/wishlist has items and update UI immediately
+            if (state.cart.length > 0) renderCart();
+            if (state.wishlist.length > 0) renderWishlist();
 
             // Fetch Data from Google Sheets
             fetch(GOOGLE_SHEET_URL)
@@ -467,11 +522,16 @@
                 return matchesCategory && matchesSearch;
             });
 
-            els.productGrid.innerHTML = filtered.map(product => `
-                <div class="product-card bg-white rounded-xl shadow-md overflow-hidden flex flex-col h-full border border-stone-100 group">
+            els.productGrid.innerHTML = filtered.map(product => {
+                const isWishlisted = state.wishlist.some(item => item.id === product.id);
+                return `
+                <div class="product-card bg-white rounded-xl shadow-md overflow-hidden flex flex-col h-full border border-stone-100 group relative">
+                    <button onclick="toggleWishlist(${product.id})" class="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-sm transition hover:bg-white text-stone-400 hover:text-red-500 ${isWishlisted ? 'text-red-500' : ''}">
+                        <i class="${isWishlisted ? 'fas' : 'far'} fa-heart"></i>
+                    </button>
                     <div class="relative overflow-hidden h-48">
                         <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover transition transform group-hover:scale-110 duration-500">
-                        <div class="absolute top-2 right-2 bg-white/90 px-2 py-1 rounded text-xs font-bold text-amber-700 shadow-sm">
+                        <div class="absolute bottom-2 left-2 bg-white/90 px-2 py-1 rounded text-xs font-bold text-amber-700 shadow-sm">
                             ₹${product.price}
                         </div>
                     </div>
@@ -531,7 +591,38 @@
 
             els.cartTotal.innerText = '₹' + total;
             els.cartCount.innerText = totalItems;
-            els.cartCount.style.opacity = '1';
+            els.cartCount.style.opacity = totalItems > 0 ? '1' : '0';
+        }
+
+        function renderWishlist() {
+            if (state.wishlist.length === 0) {
+                els.wishlistItems.innerHTML = `
+                    <div class="flex flex-col items-center justify-center h-64 text-stone-400">
+                        <i class="far fa-heart text-5xl mb-4 opacity-50"></i>
+                        <p>Your wishlist is empty.</p>
+                    </div>`;
+                els.wishlistCount.style.opacity = '0';
+                return;
+            }
+
+            els.wishlistItems.innerHTML = state.wishlist.map(item => `
+                <div class="flex gap-4 items-center bg-stone-50 p-3 rounded-lg border border-stone-100">
+                    <img src="${item.image}" class="w-16 h-16 object-cover rounded-md">
+                    <div class="flex-grow">
+                        <h4 class="font-bold text-stone-800 text-sm">${item.name}</h4>
+                        <p class="text-xs text-stone-500">₹${item.price}</p>
+                    </div>
+                    <button onclick="addToCart(${item.id})" class="text-amber-600 hover:text-amber-800 text-sm font-bold px-2">
+                        Add
+                    </button>
+                    <button onclick="toggleWishlist(${item.id})" class="text-stone-400 hover:text-red-500 px-2">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `).join('');
+
+            els.wishlistCount.innerText = state.wishlist.length;
+            els.wishlistCount.style.opacity = '1';
         }
 
         // --- Actions ---
@@ -547,11 +638,46 @@
 
             renderCart();
             saveCart();
-            toggleCart(true); // Open cart to show feedback
+            // toggleCart(true); // REMOVED: Don't auto-open cart
+            showToast(`Added ${product.name} to cart`);
+        };
+
+        window.toggleWishlist = (id) => {
+            const index = state.wishlist.findIndex(item => item.id === id);
+
+            if (index === -1) {
+                const product = state.products.find(p => p.id === id);
+                state.wishlist.push(product);
+                showToast(`Added to wishlist`);
+            } else {
+                state.wishlist.splice(index, 1);
+                showToast(`Removed from wishlist`);
+            }
+
+            saveWishlist();
+            renderWishlist();
+            renderProducts(); // Re-render to update heart icons
         };
 
         function saveCart() {
             localStorage.setItem('rudhraan_cart', JSON.stringify(state.cart));
+        }
+
+        function saveWishlist() {
+            localStorage.setItem('rudhraan_wishlist', JSON.stringify(state.wishlist));
+        }
+
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast bg-stone-800 text-white px-6 py-3 rounded-full shadow-lg text-sm font-medium flex items-center gap-2';
+            toast.innerHTML = `<i class="fas fa-check-circle text-green-400"></i> ${message}`;
+
+            els.toastContainer.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
         }
 
         window.updateQty = (id, change) => {
@@ -580,6 +706,23 @@
                 els.cartSidebar.classList.add('cart-closed');
                 els.cartSidebar.classList.remove('cart-open');
                 els.cartOverlay.classList.add('hidden');
+            }
+        };
+
+        window.toggleWishlistSidebar = (forceOpen = null) => {
+            const isOpen = !els.wishlistSidebar.classList.contains('cart-closed');
+            const shouldOpen = forceOpen !== null ? forceOpen : !isOpen;
+
+            if (shouldOpen) {
+                els.wishlistSidebar.classList.remove('cart-closed');
+                els.wishlistSidebar.classList.add('cart-open');
+                els.cartOverlay.classList.remove('hidden');
+                // Close cart if open
+                if (!els.cartSidebar.classList.contains('cart-closed')) toggleCart(false);
+            } else {
+                els.wishlistSidebar.classList.add('cart-closed');
+                els.wishlistSidebar.classList.remove('cart-open');
+                if (els.cartSidebar.classList.contains('cart-closed')) els.cartOverlay.classList.add('hidden');
             }
         };
 
@@ -651,7 +794,14 @@
 
             els.cartBtn.addEventListener('click', () => toggleCart());
             els.closeCart.addEventListener('click', () => toggleCart(false));
-            els.cartOverlay.addEventListener('click', () => toggleCart(false));
+
+            els.wishlistBtn.addEventListener('click', () => toggleWishlistSidebar());
+            els.closeWishlist.addEventListener('click', () => toggleWishlistSidebar(false));
+
+            els.cartOverlay.addEventListener('click', () => {
+                toggleCart(false);
+                toggleWishlistSidebar(false);
+            });
             els.checkoutBtn.addEventListener('click', checkoutWhatsApp);
 
             els.mobileMenuBtn.addEventListener('click', () => {
