@@ -10,6 +10,7 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap"
         rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- PWA Support -->
@@ -874,34 +875,9 @@
             // Show Modal
             document.getElementById('checkout-modal').classList.remove('hidden');
         }
-
-        function submitOrder(e) {
-            e.preventDefault();
-            const name = document.getElementById('customer-name').value;
-            const address = document.getElementById('customer-address').value;
-            const pincode = document.getElementById('customer-pincode').value;
-
-            if (!name || !address || !pincode) {
-                alert("Please fill in all details");
-                return;
-            }
-
-            let message = `Hello Rudhraan Foods! I would like to place an order:\n\n*Customer Details:*\nName: ${name}\nAddress: ${address}, ${pincode}\n\n*Order Summary:*\n`;
-
-            state.cart.forEach(item => {
-                message += `▪ ${item.name} (${item.qty} x ₹${item.price})\n`;
-            });
-
-            const total = document.getElementById('cart-total').innerText;
-            message += `\n*Total Value: ${total}*`;
-            message += `\n\nPlease confirm availability and shipping cost.`;
-
-            const encodedMsg = encodeURIComponent(message);
-            window.open(`https://wa.me/917386375813?text=${encodedMsg}`, '_blank');
-
-            // Optional: Clear cart after order? 
-            // state.cart = []; saveCart(); renderCart(); toggleCart(false);
-            document.getElementById('checkout-modal').classList.add('hidden');
+        // Optional: Clear cart after order? 
+        // state.cart = []; saveCart(); renderCart(); toggleCart(false);
+        document.getElementById('checkout-modal').classList.add('hidden');
         }
 
         function closeCheckoutModal() {
