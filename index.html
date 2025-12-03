@@ -10,7 +10,6 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap"
         rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- PWA Support -->
@@ -555,8 +554,7 @@
                 variant: p['Variant / Type'] === '-' ? '' : sanitize(p['Variant / Type']),
                 price: parseInt(p.Price) || 0,
                 sizes: sanitize(p['Available Sizes (g/kg)']),
-                // Use sanitizeUrl for images to avoid breaking query parameters like '&'
-                image: sanitizeUrl(p.ImageURL) || getPlaceholderImage(p.Category, p['Product Name'])
+                image: sanitize(p.ImageURL) || getPlaceholderImage(p.Category, p['Product Name'])
             }));
             initApp();
         }
@@ -582,15 +580,6 @@
             });
         }
 
-        function sanitizeUrl(url) {
-            if (!url) return '';
-            if (typeof url !== 'string') return url;
-            // Prevent javascript: protocol
-            if (url.toLowerCase().trim().startsWith('javascript:')) return '';
-            // Only escape quotes to prevent attribute breakout, keep '&' for query params
-            return url.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-        }
-
         function getPlaceholderImage(category, name) {
             const keywords = {
                 'Flours': 'flour',
@@ -606,30 +595,25 @@
 
         // --- Rendering ---
         function renderFilters() {
-            // Ensure products are loaded before rendering filters
-            if (!state.products || state.products.length === 0) return;
-
             const categories = ['all', ...new Set(state.products.map(p => p.category))];
             els.filterContainer.innerHTML = categories.map(cat => {
                 const isActive = state.activeCategory === cat;
+                // Use a placeholder image for the category circle. 
+                // In a real app, you'd have a specific image for each category.
+                // Here we'll just use the first product image of that category or a generic one.
+                let catImage = 'https://placehold.co/100x100/f59e0b/ffffff?text=' + cat.charAt(0).toUpperCase();
 
-                // Default placeholder
-                let catImage = 'https://placehold.co/100x100/f59e0b/ffffff?text=' + (cat ? cat.charAt(0).toUpperCase() : '?');
-
-                if (cat === 'all') {
-                    catImage = 'https://i.pinimg.com/150x150/91/e5/a3/91e5a35502eb33e055c697077b07fce0.jpg';
+                if (cat !== 'all') {
+                    const product = state.products.find(p => p.category === cat);
+                    if (product) catImage = product.image;
                 } else {
-                    // Try to find a product image for this category
-                    const product = state.products.find(p => p.category === cat && p.image);
-                    if (product) {
-                        catImage = product.image;
-                    }
+                    catImage = 'https://i.pinimg.com/150x150/91/e5/a3/91e5a35502eb33e055c697077b07fce0.jpg'; // Hero image crop for 'All'
                 }
 
                 return `
                 <button class="filter-btn flex flex-col items-center gap-1 group flex-shrink-0" data-category="${cat}">
                     <div class="w-14 h-14 md:w-20 md:h-20 rounded-full p-0.5 border-2 transition-all duration-300 ${isActive ? 'border-amber-600 scale-105' : 'border-stone-200 group-hover:border-amber-400'}">
-                        <img src="${catImage}" class="w-full h-full object-cover rounded-full" alt="${cat}" onerror="this.src='https://placehold.co/100x100/f59e0b/ffffff?text=${cat ? cat.charAt(0) : '?'}'">
+                        <img src="${catImage}" class="w-full h-full object-cover rounded-full" alt="${cat}">
                     </div>
                     <span class="text-[10px] md:text-xs font-bold uppercase tracking-wide transition-colors ${isActive ? 'text-amber-800' : 'text-stone-500 group-hover:text-amber-600'}">${cat}</span>
                 </button>
@@ -682,7 +666,7 @@
                         <i class="${isWishlisted ? 'fas' : 'far'} fa-heart text-sm md:text-base"></i>
                     </button>
                     <div class="relative overflow-hidden h-36 md:h-48">
-                        <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover transition transform group-hover:scale-110 duration-500" onerror="this.src='${getPlaceholderImage(product.category, product.name)}'">
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover transition transform group-hover:scale-110 duration-500">
                     </div>
                     <div class="p-3 md:p-5 flex-grow flex flex-col">
                         <div class="text-[10px] md:text-xs text-amber-600 font-bold uppercase tracking-widest mb-1 truncate">${product.category}</div>
@@ -890,9 +874,34 @@
             // Show Modal
             document.getElementById('checkout-modal').classList.remove('hidden');
         }
-        // Optional: Clear cart after order? 
-        // state.cart = []; saveCart(); renderCart(); toggleCart(false);
-        document.getElementById('checkout-modal').classList.add('hidden');
+
+        function submitOrder(e) {
+            e.preventDefault();
+            const name = document.getElementById('customer-name').value;
+            const address = document.getElementById('customer-address').value;
+            const pincode = document.getElementById('customer-pincode').value;
+
+            if (!name || !address || !pincode) {
+                alert("Please fill in all details");
+                return;
+            }
+
+            let message = `Hello Rudhraan Foods! I would like to place an order:\n\n*Customer Details:*\nName: ${name}\nAddress: ${address}, ${pincode}\n\n*Order Summary:*\n`;
+
+            state.cart.forEach(item => {
+                message += `▪ ${item.name} (${item.qty} x ₹${item.price})\n`;
+            });
+
+            const total = document.getElementById('cart-total').innerText;
+            message += `\n*Total Value: ${total}*`;
+            message += `\n\nPlease confirm availability and shipping cost.`;
+
+            const encodedMsg = encodeURIComponent(message);
+            window.open(`https://wa.me/917386375813?text=${encodedMsg}`, '_blank');
+
+            // Optional: Clear cart after order? 
+            // state.cart = []; saveCart(); renderCart(); toggleCart(false);
+            document.getElementById('checkout-modal').classList.add('hidden');
         }
 
         function closeCheckoutModal() {
